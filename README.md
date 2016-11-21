@@ -3,6 +3,8 @@ The Mood of the Nation: projeto para a cadeira de Programação 1 (2016/2).
 
 Linguagem utilizada: Python 3, versão 3.5.2
 
+Todo o material utilizado para a preparação deste projeto está no repositório (documentos de terceiros e testes próprios de funções).
+
 Código final encontra-se em "trends.py".
 
 Descrição encontra-se em "Projeto - Programação 1 (IF968).pdf".
