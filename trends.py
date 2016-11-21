@@ -374,10 +374,10 @@ def find_center(polygons):
 
         soma_media += centroide[2]      #acumula áreas encontradas para posteriormente serem divisores (faz-se média ponderada)
 
-    xs = 0
+    xs = 0 #armazena a soma dos elementos contidos na lista aqui, em xs
     for x in lista_xs:  #percorrerá a lista com todos os valores de x*área gerados, somando-os
         xs += x
-    ys = 0
+    ys = 0 #armazena a soma dos elementos contidos na lista aqui, em ys
     for y in lista_ys:  #mesmo caso de cima, mas somando todos os y*área gerados
         ys += y
 
@@ -448,15 +448,15 @@ def group_tweets_by_state(tweets): #alocar tweets correspostendentes a cada esta
     #e o Y retorna a sigla correspondente ao estado com esse centroide
     #X é a chave e Y o valor
 
-    for demogorgon in tweets: #analisaremos agora cada tweet armazenado em 'tweets'
-        localizacao = find_closest_state(demogorgon, centros) #atribui a 'localizacao' qual estado é o mais proximo (ex: 'ca'), usando a função 'find_clo...', que pega
-                                                                                                        #o tweet (e sua lat & lon) e compara com a menor distancia entre
-                                                                                                        #ele e o centro de estado mais próximo (verificar função acima)
-        if localizacao in tweets_by_state: 
-            tweets_by_state[localizacao].append(demogorgon) #caso a localizacao esteja em tweets_by_state (se o estado tiver lá), adiciona a esse índice o valor demogorgon
-        else:
-            tweets_by_state[localizacao] = [demogorgon] #caso o estado não esteja listado no dicionário, atribui-se
+    for z in us_states:
+        tweets_by_state[z] = [] #cria-se as chaves dos dicionários
         
+    for tw in tweets: #analisaremos agora cada tweet armazenado em 'tweets'
+        localizacao = find_closest_state(tw, centros) #atribui a 'localizacao' qual estado é o mais proximo (ex: 'ca'), usando a função 'find_clo...', que pega
+                                                                                                       #o tweet (e sua lat & lon) e compara com a menor distancia entre
+                                                                                                        #ele e o centro de estado mais próximo (verificar função acima)
+        tweets_by_state[localizacao].append(tw) #anexa o tweet a sua chave correspondente (ao seu estado correspondente)
+                
     return tweets_by_state
 
 
