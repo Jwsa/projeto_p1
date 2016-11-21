@@ -1,8 +1,10 @@
 """Visualizing Twitter Sentiment Across America"""
-#run_doctests('nome_funcao')
-#parecer de todas as funções (colocar pra rodar e digitar no idle):
-    #>>> import doctest
-    #>>> doctest.testmod()
+
+#run_doctests('nome_funcao') -> verifica se função está funcionando
+
+#para verificar todas as funções de uma vez, rode o programa e digite no idle os seguintes comandos:
+#import doctest
+#doctest.testmod()
 
 
 from data import word_sentiments, load_tweets
@@ -103,21 +105,15 @@ def extract_words(text):
         palavras_juntas.append(s)
         p+=1
         i+=1
-        n=0 #zerando n, s e palavras_temp -> variáveis e lista temporárias apenas para controlar
+        n=0 #zerando n, s e palavras_temp -> variáveis e lista temporárias, apenas para controlar
         s= ""
         palavras_temp = []
 
-
-    #tirando espaços dados por palavras_juntas e retornando as palavras em lista_nova, que conterá ['oi', 'tudo', 'bem']
-    lista_provisoria =[]    
-    lista_final = []
-    
+    #tirando espaços dados por palavras_juntas e retornando as palavras em lista_nova, que conterá ['oi', 'tudo', 'bem']    
     lista_nova = []
     for x in palavras_juntas:
         x = x.split()
         lista_nova += x
-
-
     return lista_nova
 
 
@@ -224,7 +220,7 @@ def analyze_tweet_sentiment(tweet):
             total_palavras_sentimento += 1 #e para fazer a media corretamente, vejo quantas palavras têm sentimento (senão iria dividir pelo total de palavras, incluindo as sem sentimento)
 
     #necessário pôr essa última verificação para saber se há palavras com sentimentos. Caso contrário, retorna direto None
-    if total_palavras_sentimento >= 1 :  #ou seja, se existe ao menos uma palavra com sentimento (senão dividiria por 0)
+    if total_palavras_sentimento > 0 :  #ou seja, se existe ao menos uma palavra com sentimento (senão dividiria por 0)
         average = soma/total_palavras_sentimento #faz e retorna a média
         return average #aqui é a média do valor dos sentimentos
     else:
@@ -381,7 +377,6 @@ def find_center(polygons):
     xs = 0
     for x in lista_xs:  #percorrerá a lista com todos os valores de x*área gerados, somando-os
         xs += x
-
     ys = 0
     for y in lista_ys:  #mesmo caso de cima, mas somando todos os y*área gerados
         ys += y
@@ -448,10 +443,10 @@ def group_tweets_by_state(tweets): #alocar tweets correspostendentes a cada esta
     """
     tweets_by_state = {} #inicia como um dicionário vazio
     "*** YOUR CODE HERE ***"
-    centros = {n: find_center(s) for n, s in us_states.items()}
-    #o dicionario acima é responsável por armazenar o centroide do poligono de poligonos que compõem um dado estado (cada n representa um estado)
-    #e o S retorna a sigla correspondente ao estado com esse centroide
-    #N é a chave e S o valor
+    centros = {x: find_center(y) for x, y in us_states.items()}
+    #o dicionario acima é responsável por armazenar o centroide do poligono de poligonos que compõem um dado estado (cada x representa um estado)
+    #e o Y retorna a sigla correspondente ao estado com esse centroide
+    #X é a chave e Y o valor
 
     for demogorgon in tweets: #analisaremos agora cada tweet armazenado em 'tweets'
         localizacao = find_closest_state(demogorgon, centros) #atribui a 'localizacao' qual estado é o mais proximo (ex: 'ca'), usando a função 'find_clo...', que pega
@@ -460,10 +455,10 @@ def group_tweets_by_state(tweets): #alocar tweets correspostendentes a cada esta
         if localizacao in tweets_by_state: 
             tweets_by_state[localizacao].append(demogorgon) #caso a localizacao esteja em tweets_by_state (se o estado tiver lá), adiciona a esse índice o valor demogorgon
         else:
-            tweets_by_state[localizacao] = [demogorgon] #caso o estado não esteja listado no dicionário, atribui-se o tweet à localização
-    
-    
+            tweets_by_state[localizacao] = [demogorgon] #caso o estado não esteja listado no dicionário, atribui-se
+        
     return tweets_by_state
+
 
 #####PROBLEMA 10 ok
 def most_talkative_state(term):
@@ -478,11 +473,11 @@ def most_talkative_state(term):
     tweets = load_tweets(make_tweet, term)  # A list of tweets containing term
     "*** YOUR CODE HERE ***"
 
-    tweets_by_state = group_tweets_by_state(tweets) #atribui a essa variavel 
+    tweets_by_state = group_tweets_by_state(tweets) #atribui a essa variavel o que fizemos no problema anterior
     maximo = 0
     
     for x in tweets_by_state: #tweets_by_state contem todos os estados e seus respectivos tweets
-        if len(tweets_by_state[x]) > maximo: #se o tamanho (quantidade de tweets) para estado X for maior que o maximo (inicia como 0)
+        if len(tweets_by_state[x]) > maximo: #faz atividade abaixo se o tamanho (quantidade de tweets) para estado X for maior que o maximo (inicia como 0)
             maximo = len(tweets_by_state[x]) #atualiza-se o maximo para o tamanho da quantidade de tweets no estado que mais se citou o termo
             estado_mais_termos = x #e logo depois retorna qual estado foi esse (x)
 
@@ -552,11 +547,13 @@ def group_tweets_by_hour(tweets):
     "*** YOUR CODE HERE ***"
 
     for n in range(24):
-        tweets_by_hour[n] = [] #criando as chaves no dicionario, pois dava erro: KeyError: 19
+        tweets_by_hour[n] = [] #criando as chaves no dicionario, pois dava erro anteriormente da forma que eu estava fazendo: KeyError: 19
 
     for x in tweets:    #percorrendo os tweets
         horario = tweet_time(x).hour #lembrar oq a função tweet_time faz (Return the datetime that represents when the tweet was posted)
-                                                #neste caso acima nós pegamos em tweet_time do (tweet) apenas a .hour (pois ficará armazenado no dicionario de acordo com as horas)
+                                                #neste caso acima nós pegamos em tweet_time do (tweet) apenas a .hour (pois ficará
+                                                #armazenado no dicionario de acordo com as horas). No objeto datetime temos os seguintes elementos:
+                                                #(year, month, day, hour=0, minute=0, second=0, microsecond=0, tzinfo=None)
         tweets_by_hour[horario].append(x) #no dicio 'tweets_by_hour', na chave [horario], adicionar o (tweet)
             
     return tweets_by_hour
